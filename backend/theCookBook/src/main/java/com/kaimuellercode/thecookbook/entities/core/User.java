@@ -1,4 +1,4 @@
-package com.kaimuellercode.thecookbook.entities;
+package com.kaimuellercode.thecookbook.entities.core;
 
 
 import jakarta.persistence.*;
@@ -16,23 +16,29 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    @NotBlank
+
     @Size(max=20)
     private String name;
 
     // the Hash of the Password
-    @NotBlank
     private int pwHash;
 
-    @NotBlank
     @Size(max=50)
     @Email
     private String email;
 
-    public User(String name, String password, String email) {
+    private UserRights userRights;
+
+    public User() {
+
+    }
+
+
+    public User(String name, String password, String email, UserRights userRights) {
         this.name = name;
         this.pwHash = password.hashCode();
         this.email = email;
+        this.userRights = userRights;
     }
 
     public String getName() {
@@ -57,5 +63,12 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Long getId() {
+        return Id;
+    }
+
+    public UserRights getUserRights() {
+        return userRights;
     }
 }

@@ -1,5 +1,6 @@
-package com.kaimuellercode.thecookbook.entities;
+package com.kaimuellercode.thecookbook.entities.repositories;
 
+import com.kaimuellercode.thecookbook.entities.core.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

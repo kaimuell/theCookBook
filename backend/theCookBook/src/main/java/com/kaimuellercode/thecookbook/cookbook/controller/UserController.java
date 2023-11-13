@@ -1,7 +1,7 @@
-package com.kaimuellercode.thecookbook.entities.controller;
+package com.kaimuellercode.thecookbook.cookbook.controller;
 
-import com.kaimuellercode.thecookbook.entities.core.User;
-import com.kaimuellercode.thecookbook.entities.repositories.UserRepository;
+import com.kaimuellercode.thecookbook.cookbook.core.User;
+import com.kaimuellercode.thecookbook.cookbook.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

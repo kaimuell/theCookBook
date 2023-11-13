@@ -1,21 +1,17 @@
-package com.kaimuellercode.thecookbook.entities.core;
+package com.kaimuellercode.thecookbook.cookbook.core;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="ingredients")
 public class Ingredient {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private Long id;
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

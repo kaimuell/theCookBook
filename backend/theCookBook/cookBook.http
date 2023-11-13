@@ -1,0 +1,15 @@
+###
+GET http://localhost:8080/recipe/byauthor?author=bob
+Accept: application/json
+Content-Type: application/json
+
+###
+GET http://localhost:8080/recipe/byauthor?author=mary
+Accept: application/json
+Content-Type: application/json
+
+###
+GET http://localhost:8080/recipe/all
+Accept: application/json
+Content-Type: application/json
+

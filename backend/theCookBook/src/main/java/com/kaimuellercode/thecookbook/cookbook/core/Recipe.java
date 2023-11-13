@@ -1,4 +1,4 @@
-package com.kaimuellercode.thecookbook.entities.core;
+package com.kaimuellercode.thecookbook.cookbook.core;
 
 import jakarta.persistence.*;
 
@@ -10,6 +10,9 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private String name;
+
     // the cooking instructions
     private String instructions;
 
@@ -60,5 +63,13 @@ public class Recipe {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

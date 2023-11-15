@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 @Table(name="ingredients")
 public class Ingredient {
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -38,6 +42,8 @@ public class Ingredient {
         this.unit = unit;
     }
 
+
+
     // the name of the ingredient
     private String name;
     // the amount of the ingredient used
@@ -45,5 +51,14 @@ public class Ingredient {
     //the unit in which the amount is measured
     private IngredientUnit unit;
 
+    public Long getRecipe_id() {
+        return recipe_id;
+    }
+
+    public void setRecipe_id(Long recipe_id) {
+        this.recipe_id = recipe_id;
+    }
+
+    private Long recipe_id;
 
 }

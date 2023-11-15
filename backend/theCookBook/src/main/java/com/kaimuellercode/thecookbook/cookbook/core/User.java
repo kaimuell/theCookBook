@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name="users",
         uniqueConstraints = {
@@ -27,6 +30,10 @@ public class User {
     private String email;
 
     private UserRights userRights;
+
+    @OneToMany
+    @JoinColumn(name = "authorId")
+    private Set<Recipe> recipes = new HashSet<>();
 
     public User() {
 
@@ -69,5 +76,17 @@ public class User {
 
     public UserRights getUserRights() {
         return userRights;
+    }
+
+    public Set<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
+    }
+
+    public void addRecipe(Recipe recipe) {
+        this.recipes.add(recipe);
     }
 }

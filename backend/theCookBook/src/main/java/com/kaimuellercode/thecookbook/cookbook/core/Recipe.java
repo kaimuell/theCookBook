@@ -17,10 +17,11 @@ public class Recipe {
     private String instructions;
 
     //the Id of the User which authored this recipe
-    @ManyToOne
-    private User author;
+
+    private Long authorId;
 
     @OneToMany
+    @JoinColumn(name = "recipe_id")
     private List<Ingredient> ingredientList;
     private String imagePath;
 
@@ -39,14 +40,6 @@ public class Recipe {
 
     public void setInstructions(String instructions) {
         this.instructions = instructions;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public List<Ingredient> getIngredientList() {
@@ -71,5 +64,13 @@ public class Recipe {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 }

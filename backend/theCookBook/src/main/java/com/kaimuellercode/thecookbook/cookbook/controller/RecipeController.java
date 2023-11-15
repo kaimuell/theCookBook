@@ -1,6 +1,6 @@
 package com.kaimuellercode.thecookbook.cookbook.controller;
 
-import com.kaimuellercode.thecookbook.cookbook.CookBookService;
+import com.kaimuellercode.thecookbook.cookbook.service.CookBookService;
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

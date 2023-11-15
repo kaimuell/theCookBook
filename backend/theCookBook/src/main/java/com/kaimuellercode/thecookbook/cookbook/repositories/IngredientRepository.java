@@ -6,8 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository("ingredients")
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
-    @Override
-    boolean existsById(Long aLong);
-
-
 }

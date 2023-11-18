@@ -52,7 +52,7 @@ public class ControllerTests extends TestSetup {
     public void testGetRecipesWithIngredient() throws Exception {
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/recipe/with_ingredient?ingredientName=mehl")
+                        .get("/recipe/with_ingredient?ingredientName=Mehl")
                 )
                 .andExpect(status().isOk())
                 .andReturn();

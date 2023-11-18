@@ -3,6 +3,7 @@ package com.kaimuellercode.thecookbook.cookbook.service;
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
 
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,4 +35,20 @@ public interface CookBookService {
      * @return all Recipes wich contain this ingredient
      */
     List<Recipe> getRecipeWithIngredient(String ingredientName);
+
+    /**
+     * Get All Recipes wich contain exactly those Ingredients, which are in the List
+     * @param ingredientNames The List of Ingredients
+     * @return the Recipes whose Ingredients match the List of Ingredients
+     */
+    List<Recipe> getRecipesWithExactlyMatchingIngredients(Collection<String> ingredientNames);
+
+    /**
+     * Get All Recipes wich contain only Ingredients, which are in the List
+     * and Contain no Ingredients which are not in the List. Not all Ingredients
+     * in the List have to be part of the Recipe
+     * @param ingredientNames The List of Ingredients
+     * @return the Recipes which can be Cooked with these Ingredients
+     */
+    List<Recipe> getRecipesBookableWithIngredients(Collection<String> ingredientNames);
 }

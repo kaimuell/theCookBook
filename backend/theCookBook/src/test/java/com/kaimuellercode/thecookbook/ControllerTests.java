@@ -52,7 +52,7 @@ public class ControllerTests extends TestSetup {
     public void testGetRecipesWithIngredient() throws Exception {
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/recipe/with_ingredient?ingredientName=mehl")
+                        .get("/recipe/with_ingredient?ingredientName=Mehl")
                 )
                 .andExpect(status().isOk())
                 .andReturn();
@@ -61,9 +61,6 @@ public class ControllerTests extends TestSetup {
         Type listType = new TypeToken<List<Recipe>>() {}.getType();
         List<Recipe> recipes = gson.fromJson(response, listType);
         assertFalse(recipes.isEmpty());
-
-
-
         Iterable<Recipe> recipies = recipeRepository.findAll();
         recipies.forEach(rec -> System.out.println("RECIPE: id=" + rec.getId() + ", name="+rec.getName() + ", author=" + rec.getAuthorId()));
         Iterable<Ingredient> ingredients = ingredientRepository.findAll();
@@ -85,5 +82,29 @@ public class ControllerTests extends TestSetup {
         assertFalse(recipes2.isEmpty());
         assertEquals(1, recipes2.size());
         assertEquals("Urankuchen", recipes2.get(0).getName());
+    }
+
+    @Test
+    public void getCookableRecipes() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/recipe/cookable_with_ingredients?ingredientNames=Mehl,Schokolade")
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+        String response = result.getResponse().getContentAsString();
+        System.out.println("ANSWER : " + response);
+        Type listType = new TypeToken<List<Recipe>>() {}.getType();
+        List<Recipe> recipes = gson.fromJson(response, listType);
+        assertFalse(recipes.isEmpty());
+        assertEquals(1, recipes.size());
+
+        MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/recipe/cookable_with_ingredients?ingredientNames=Mehl,Schokolade,zucker")
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+        String response2 = result2.getResponse().getContentAsString();
+        List<Recipe> recipes2 = gson.fromJson(response2, listType);
+        assertEquals(2, recipes2.size());
     }
 }

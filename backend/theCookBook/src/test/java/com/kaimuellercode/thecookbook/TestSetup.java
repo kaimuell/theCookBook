@@ -52,7 +52,7 @@ public abstract class TestSetup {
         i1.setUnit(KILOGRAMM);
 
         Ingredient i2 = new Ingredient();
-        i2.setName("mehl");
+        i2.setName("Mehl");
         i2.setAmount(200.0F);
         i2.setUnit(GRAMM);
 
@@ -97,6 +97,29 @@ public abstract class TestSetup {
         recipeRepository.save(r2);
         i.setRecipe_id(r2.getId());
         ingredientRepository.save(i);
+
+        Ingredient i3 = new Ingredient();
+        i3.setAmount(100F);
+        i3.setUnit(GRAMM);
+        i3.setName("Schokolade");
+        Ingredient i4 = new Ingredient();
+        i4.setAmount(150F);
+        i4.setUnit(GRAMM);
+        i4.setName("Mehl");
+
+        Recipe r3 = new Recipe();
+        r3.setName("Schokokuchen");
+        r3.setAuthorId(u.getId());
+        r3.setIngredientList(List.of(i3, i4));
+        r3.setImagePath("somewherq");
+        r3.setInstructions("Backe With Love!");
+
+        r.setAuthorId(u2.getId());
+        recipeRepository.save(r3);
+        i3.setRecipe_id(r3.getId());
+        i4.setRecipe_id(r3.getId());
+        ingredientRepository.save(i3);
+        ingredientRepository.save(i4);
 
         Iterable<Recipe> recipies = recipeRepository.findAll();
         recipies.forEach(rec -> {

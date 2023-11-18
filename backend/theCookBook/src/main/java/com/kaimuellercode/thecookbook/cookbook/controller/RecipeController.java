@@ -30,4 +30,8 @@ public class RecipeController {
     public List<Recipe> getRecipesWhichContainIngredient(@RequestParam String ingredientName){
         return cookBookService.getRecipeWithIngredient(ingredientName);
     }
+    @GetMapping(path = "cookable_with_ingredients")
+    public List<Recipe> getRecipesCookableWithIngredients(@RequestParam List<String> ingredientNames){
+        return cookBookService.getRecipesBookableWithIngredients(ingredientNames);
+    }
 }

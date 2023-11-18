@@ -17,7 +17,6 @@ public class Recipe {
     private String instructions;
 
     //the Id of the User which authored this recipe
-
     private Long authorId;
 
     @OneToMany

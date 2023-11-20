@@ -36,9 +36,7 @@ public class User {
     private Set<Recipe> recipes = new HashSet<>();
 
     public User() {
-
     }
-
 
     public User(String name, String password, String email, UserRights userRights) {
         this.name = name;

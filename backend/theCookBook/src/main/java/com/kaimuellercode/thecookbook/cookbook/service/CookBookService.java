@@ -1,6 +1,7 @@
 package com.kaimuellercode.thecookbook.cookbook.service;
 
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
+import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 
 
 import java.util.Collection;
@@ -51,4 +52,6 @@ public interface CookBookService {
      * @return the Recipes which can be Cooked with these Ingredients
      */
     List<Recipe> getRecipesBookableWithIngredients(Collection<String> ingredientNames);
+
+    void saveNewRecipe(Recipe recipe) throws NoSuchUserIdError;
 }

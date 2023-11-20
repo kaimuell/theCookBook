@@ -1,17 +1,22 @@
 package com.kaimuellercode.thecookbook.cookbook.service;
 
+import com.kaimuellercode.thecookbook.cookbook.core.Ingredient;
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
+import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 import com.kaimuellercode.thecookbook.cookbook.repositories.IngredientRepository;
 import com.kaimuellercode.thecookbook.cookbook.repositories.RecipeRepository;
 import com.kaimuellercode.thecookbook.cookbook.repositories.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @Service("cookbookservice")
 public class CookBookServiceImplementation implements CookBookService {
@@ -83,6 +88,42 @@ public class CookBookServiceImplementation implements CookBookService {
                         Recipe.class)
                 .setParameter("ingList", ingredientNames).getResultList();
 
+    }
+
+    @Override
+    @Transactional
+    public void saveNewRecipe(Recipe recipe) throws NoSuchUserIdError {
+        if (!userRepository.existsById(recipe.getAuthorId())) throw new NoSuchUserIdError();
+        Recipe r = InitialiseNewRecipeWithvaluesOf(recipe);
+        List<Ingredient> ingredients = createNewListWithIngredientsMatchingTheValuesOfIngredientsInRecipe(recipe);
+        r.setIngredientList(ingredients);
+        recipeRepository.save(r);   //Save first to let it generate an Id
+        assertNotNull(r.getId());
+        for (Ingredient ingredient : r.getIngredientList()){
+            ingredient.setRecipe_id(r.getId());
+            ingredientRepository.save(ingredient);
+        }
+    }
+
+    private static List<Ingredient> createNewListWithIngredientsMatchingTheValuesOfIngredientsInRecipe(Recipe recipe) {
+        List<Ingredient> ingredients = new ArrayList<>(recipe.getIngredientList().size());
+        for (Ingredient ingredient : recipe.getIngredientList()){
+            Ingredient i = new Ingredient();
+            i.setName(ingredient.getName());
+            i.setUnit(ingredient.getUnit());
+            i.setAmount(ingredient.getAmount());
+            ingredients.add(i);
+        }
+        return ingredients;
+    }
+
+    private static Recipe InitialiseNewRecipeWithvaluesOf(Recipe recipe) {
+        Recipe r = new Recipe();
+        r.setName(recipe.getName());
+        r.setInstructions(recipe.getInstructions());
+        r.setAuthorId(recipe.getAuthorId());
+        r.setImagePath(recipe.getImagePath());
+        return r;
     }
 
 

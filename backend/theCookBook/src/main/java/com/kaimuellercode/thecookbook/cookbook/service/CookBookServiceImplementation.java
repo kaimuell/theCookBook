@@ -89,14 +89,15 @@ public class CookBookServiceImplementation implements CookBookService {
                 .setParameter("ingList", ingredientNames).getResultList();
 
     }
-
-    @Override
     @Transactional
+    @Override
     public void saveNewRecipe(Recipe recipe) throws NoSuchUserIdError {
         if (!userRepository.existsById(recipe.getAuthorId())) throw new NoSuchUserIdError();
         Recipe r = InitialiseNewRecipeWithvaluesOf(recipe);
-        List<Ingredient> ingredients = createNewListWithIngredientsMatchingTheValuesOfIngredientsInRecipe(recipe);
-        r.setIngredientList(ingredients);
+        if (recipe.getIngredientList() != null) {
+            List<Ingredient> ingredients = createNewListWithIngredientsMatchingTheValuesOfIngredientsInRecipe(recipe);
+            r.setIngredientList(ingredients);
+        }else r.setIngredientList(new ArrayList<>());
         recipeRepository.save(r);   //Save first to let it generate an Id
         assertNotNull(r.getId());
         for (Ingredient ingredient : r.getIngredientList()){

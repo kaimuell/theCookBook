@@ -1,6 +1,7 @@
 package com.kaimuellercode.thecookbook.cookbook.service;
 
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
+import com.kaimuellercode.thecookbook.cookbook.core.User;
 import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 
 
@@ -54,4 +55,6 @@ public interface CookBookService {
     List<Recipe> getRecipesBookableWithIngredients(Collection<String> ingredientNames);
 
     void saveNewRecipe(Recipe recipe) throws NoSuchUserIdError;
+
+    User createUserEntry(User user);
 }

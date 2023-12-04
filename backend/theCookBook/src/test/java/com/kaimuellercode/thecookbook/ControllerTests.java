@@ -4,8 +4,9 @@ import com.google.gson.reflect.TypeToken;
 import com.kaimuellercode.thecookbook.cookbook.core.Ingredient;
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
 import com.kaimuellercode.thecookbook.cookbook.core.User;
+import com.kaimuellercode.thecookbook.cookbook.core.UserRights;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.engine.TestExecutionResult;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -116,7 +117,7 @@ public class ControllerTests extends TestSetup {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/users/all"))
                 .andExpect(status().isOk())
                 .andReturn();
-        String allUsers = result.getResponse().getContentAsString();
+        //String allUsers = result.getResponse().getContentAsString();
         //Type listType = new TypeToken<List<User>>() {}.getType();
         //List<User> users = gson.fromJson(allUsers, listType);
         //long id = users.get(0).getId();
@@ -128,6 +129,18 @@ public class ControllerTests extends TestSetup {
                 .andReturn();
         String nameReturned = result2.getResponse().getContentAsString();
         assertEquals("bob2", nameReturned);
+        User u = new User("John Doe", "jk132i3j21990", "John@doe.net", UserRights.USER);
+        String json = gson.toJson(u);
+        MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/users/newUser")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String body = mvc.getResponse().getContentAsString();
+        User u2 = gson.fromJson(body, User.class);
+        assertEquals(u.getName(), u2.getName());
     }
+
+
 
 }

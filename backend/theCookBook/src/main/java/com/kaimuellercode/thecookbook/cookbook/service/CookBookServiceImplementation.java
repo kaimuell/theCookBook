@@ -2,6 +2,8 @@ package com.kaimuellercode.thecookbook.cookbook.service;
 
 import com.kaimuellercode.thecookbook.cookbook.core.Ingredient;
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
+import com.kaimuellercode.thecookbook.cookbook.core.User;
+import com.kaimuellercode.thecookbook.cookbook.core.UserRights;
 import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 import com.kaimuellercode.thecookbook.cookbook.repositories.IngredientRepository;
 import com.kaimuellercode.thecookbook.cookbook.repositories.RecipeRepository;
@@ -12,10 +14,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @Service("cookbookservice")
@@ -103,6 +103,18 @@ public class CookBookServiceImplementation implements CookBookService {
             ingredient.setRecipe_id(r.getId());
             ingredientRepository.save(ingredient);
         }
+    }
+
+    @Override
+    public User createUserEntry(User user) {
+        User user1 = new User();
+        user1.setUserRights(UserRights.USER);
+        user1.setName(user.getName());
+        user1.setEmail(user.getEmail());
+        user1.setRecipes(new HashSet<>());
+        user1.setPwHash(user.getPwHash()); //TODO HOW TO COMMUNICATE PASSWORDS ???? NEED SALT AND PEPPER !
+        userRepository.save(user1);
+        return user1;
     }
 
     private static List<Ingredient> createNewListWithIngredientsMatchingTheValuesOfIngredientsInRecipe(Recipe recipe) {

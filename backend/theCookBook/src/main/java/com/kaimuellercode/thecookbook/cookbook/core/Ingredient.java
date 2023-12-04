@@ -8,6 +8,18 @@ import jakarta.validation.constraints.NotNull;
 public class Ingredient {
 
 
+    public Ingredient(float amount, String name, IngredientUnit ingredientUnit) {
+        this.amount = amount;
+        this.name = name;
+        this.unit = ingredientUnit;
+    }
+
+    public Ingredient() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

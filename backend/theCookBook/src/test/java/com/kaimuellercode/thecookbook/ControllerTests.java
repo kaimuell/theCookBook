@@ -6,13 +6,15 @@ import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
 import com.kaimuellercode.thecookbook.cookbook.core.User;
 import com.kaimuellercode.thecookbook.cookbook.core.UserRights;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static com.kaimuellercode.thecookbook.cookbook.core.IngredientUnit.GRAMM;
+import static com.kaimuellercode.thecookbook.cookbook.core.IngredientUnit.KILOGRAMM;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -112,6 +114,7 @@ public class ControllerTests extends TestSetup {
         List<Recipe> recipes2 = gson.fromJson(response2, listType);
         assertEquals(2, recipes2.size());
     }
+
     @Test
     public void testGetUsernameMapping() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/users/all"))
@@ -142,5 +145,40 @@ public class ControllerTests extends TestSetup {
     }
 
 
+
+
+    @Test
+    public void testPostNewRecipe() throws Exception {
+        Long userid = userRepository.findAll().get(0).getId();
+        long before = recipeRepository.count();
+        System.out.println("USERID : " + userid);
+        userRepository.findAll().forEach(user -> System.out.println(user.getId()));
+
+
+        Recipe recipe = new Recipe();
+        recipe.setName("Brot");
+        recipe.setAuthorId(userid);
+        recipe.setIngredientList(List.of(new Ingredient(100F, "Gold", GRAMM),
+                                        new Ingredient(1.5F, "Salz", KILOGRAMM)));
+        recipe.setInstructions("COOK WITH CARE???");
+        String recipeJSON = gson.toJson(recipe);
+        System.out.println(recipeJSON);
+        MvcResult result = mockMvc.perform(
+                MockMvcRequestBuilders.post("/recipe/newRecipe")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(recipeJSON)
+        ).andExpect(status().isOk()).andReturn();
+        assertEquals(before + 1, recipeRepository.count());
+        assertEquals(result.getResponse().getContentAsString(), "OK");
+
+        recipe.setAuthorId(userid+105);
+        recipeJSON = gson.toJson(recipe);
+        result = mockMvc.perform(
+                MockMvcRequestBuilders.post("/recipe/newRecipe")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(recipeJSON)
+        ).andExpect(status().isOk()).andReturn();
+        assertEquals(result.getResponse().getContentAsString(), "USER NOT EXISTENT");
+    }
 
 }

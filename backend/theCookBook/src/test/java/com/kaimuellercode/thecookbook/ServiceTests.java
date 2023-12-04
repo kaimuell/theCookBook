@@ -1,9 +1,7 @@
 package com.kaimuellercode.thecookbook;
 
 
-import com.kaimuellercode.thecookbook.cookbook.core.Ingredient;
-import com.kaimuellercode.thecookbook.cookbook.core.IngredientUnit;
-import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
+import com.kaimuellercode.thecookbook.cookbook.core.*;
 import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 import org.junit.jupiter.api.Test;
 
@@ -58,4 +56,12 @@ public class ServiceTests extends TestSetup {
 
         assertThrows(NoSuchUserIdError.class, () -> cookBookService.saveNewRecipe(r2));
     }
+    @Test
+    public void testInsertUser(){
+        User u = new User("John Doe", "jk132i3j21990", "John@doe.net", UserRights.USER);
+        User u2 = cookBookService.createUserEntry(u);
+        assertEquals(u.getName(), u2.getName());
+        assertNotNull(u2.getId());
+    }
+
 }

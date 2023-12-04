@@ -1,6 +1,7 @@
 package com.kaimuellercode.thecookbook.cookbook.service;
 
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
+import com.kaimuellercode.thecookbook.cookbook.core.User;
 import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 import jakarta.transaction.Transactional;
 
@@ -56,4 +57,6 @@ public interface CookBookService {
 
     @Transactional
     void saveNewRecipe(Recipe recipe) throws NoSuchUserIdError;
+
+    User createUserEntry(User user);
 }

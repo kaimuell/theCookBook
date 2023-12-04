@@ -3,7 +3,9 @@ package com.kaimuellercode.thecookbook;
 import com.google.gson.reflect.TypeToken;
 import com.kaimuellercode.thecookbook.cookbook.core.Ingredient;
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
+import com.kaimuellercode.thecookbook.cookbook.core.User;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.engine.TestExecutionResult;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -62,9 +64,11 @@ public class ControllerTests extends TestSetup {
         List<Recipe> recipes = gson.fromJson(response, listType);
         assertFalse(recipes.isEmpty());
         Iterable<Recipe> recipies = recipeRepository.findAll();
-        recipies.forEach(rec -> System.out.println("RECIPE: id=" + rec.getId() + ", name="+rec.getName() + ", author=" + rec.getAuthorId()));
+        recipies.forEach(rec ->
+                System.out.println("RECIPE: id=" + rec.getId() + ", name="+rec.getName() + ", author=" + rec.getAuthorId()));
         Iterable<Ingredient> ingredients = ingredientRepository.findAll();
-        ingredients.forEach(ing -> System.out.println("INGREDIENT: id="+ing.getId() + ", Name="+ing.getName() + ", recipe_id=" + ing.getRecipe_id()));
+        ingredients.forEach(ing ->
+                System.out.println("INGREDIENT: id="+ing.getId() + ", Name="+ing.getName() + ", recipe_id=" + ing.getRecipe_id()));
 
         MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
                         .get("/recipe/with_ingredient?ingredientName=Uran")
@@ -107,4 +111,23 @@ public class ControllerTests extends TestSetup {
         List<Recipe> recipes2 = gson.fromJson(response2, listType);
         assertEquals(2, recipes2.size());
     }
+    @Test
+    public void testGetUsernameMapping() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/users/all"))
+                .andExpect(status().isOk())
+                .andReturn();
+        String allUsers = result.getResponse().getContentAsString();
+        //Type listType = new TypeToken<List<User>>() {}.getType();
+        //List<User> users = gson.fromJson(allUsers, listType);
+        //long id = users.get(0).getId();
+        //String name = users.get(0).getName();
+
+        MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/users/username?id=3")).andExpect(status()
+                .isOk())
+                .andReturn();
+        String nameReturned = result2.getResponse().getContentAsString();
+        assertEquals("bob2", nameReturned);
+    }
+
 }

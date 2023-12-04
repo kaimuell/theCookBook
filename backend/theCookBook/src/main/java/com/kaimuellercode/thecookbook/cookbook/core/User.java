@@ -3,7 +3,10 @@ package com.kaimuellercode.thecookbook.cookbook.core;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +19,7 @@ import java.util.Set;
     })
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
     @Size(max=20)
@@ -29,6 +32,7 @@ public class User {
     @Email
     private String email;
 
+    @NotNull
     private UserRights userRights;
 
     @OneToMany
@@ -36,9 +40,13 @@ public class User {
     private Set<Recipe> recipes = new HashSet<>();
 
     public User() {
-
     }
-
+    public User(Long id, String name, String password, String email, UserRights userRights) {
+        this.name = name;
+        this.pwHash = password.hashCode();
+        this.email = email;
+        this.userRights = userRights;
+    }
 
     public User(String name, String password, String email, UserRights userRights) {
         this.name = name;
@@ -88,5 +96,13 @@ public class User {
 
     public void addRecipe(Recipe recipe) {
         this.recipes.add(recipe);
+    }
+
+    public void setUserRights(UserRights userRights) {
+        this.userRights = userRights;
+    }
+
+    public void setId(Long id) {
+        Id = id;
     }
 }

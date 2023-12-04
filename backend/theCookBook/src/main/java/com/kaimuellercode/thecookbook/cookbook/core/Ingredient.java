@@ -17,9 +17,6 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,5 +1,4 @@
-<p>cookbook works!</p>
-<li *ngFor = 'let recipe of recipes'>
-    <p>Id : {{recipe.id}}, Name : {{recipe.name}} , Instructions = {{recipe.instructions}}</p>
-    <p>Ingredients: {{recipe.ingredientList}}</p>
+<li *ngFor = 'let recipe of recipes' class="results">
+    <img class="listing-photo" [src]="recipe.imagePath" alt="Photo of {{recipe.name}}">
+    <p>{{recipe.name}}</p>
 </li>

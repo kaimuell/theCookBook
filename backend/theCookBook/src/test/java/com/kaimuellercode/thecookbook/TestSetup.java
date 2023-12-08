@@ -79,6 +79,7 @@ public abstract class TestSetup {
         u2.setEmail("sjidjsaio@fold.com");
         u2.setName("sdakl");
         u2.setPwHash(23781);
+        u2.setUserRights(UserRights.USER);
 
         Ingredient i = new Ingredient();
         i.setAmount(100F);

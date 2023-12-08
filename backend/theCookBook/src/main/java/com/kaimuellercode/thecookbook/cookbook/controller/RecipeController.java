@@ -1,5 +1,6 @@
 package com.kaimuellercode.thecookbook.cookbook.controller;
 
+import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 import com.kaimuellercode.thecookbook.cookbook.service.CookBookService;
 import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,16 @@ public class RecipeController {
         Optional<Recipe> r =  cookBookService.getRecipeByID(id);
         if (r.isEmpty()) throw new NoSuchElementException();
         return r.get();
+    }
+
+    @PostMapping(value="newRecipe", consumes = "application/json")
+    public String insertNewRecipe(@RequestBody Recipe recipe){
+        System.out.println("AUTHOR ID : " + recipe.getAuthorId());
+        try {
+            cookBookService.saveNewRecipe(recipe);
+        } catch (NoSuchUserIdError e1){
+            return "USER NOT EXISTENT";
+        }
+        return "OK";
     }
 }

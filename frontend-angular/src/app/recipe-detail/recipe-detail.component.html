@@ -1,1 +1,12 @@
-<p>recipe-detail works!</p>
+<div>
+    <h2>{{recipe?.name}}</h2>
+    <img [src]="recipe?.imagePath" class="detailsImage">
+</div>
+<div>
+    <li *ngFor="let ingredient of recipe?.ingredientList">
+    <p>
+        {{ingredient.name}}  :  {{ingredient.amount}} {{ingredient.unit}}
+    </p>
+    </li>
+    <p>{{authorName}}</p>
+</div>

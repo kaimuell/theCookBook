@@ -1,4 +1,6 @@
-<li *ngFor = 'let recipe of recipes' class="results">
-    <img class="listing-photo" [src]="recipe.imagePath" alt="Photo of {{recipe.name}}">
-    <p>{{recipe.name}}</p>
+<li *ngFor='let recipe of recipes' class="results">
+    <a [routerLink]="['/details', recipe.id]">
+        <img class="listing-photo" [src]="recipe.imagePath" alt="Photo of {{recipe.name}}">
+        <p>{{recipe.name}}</p>
+    </a>
 </li>

@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,6 +38,7 @@ public class User {
     private Set<Recipe> recipes = new HashSet<>();
 
     public User() {
+
     }
     public User(Long id, String name, String password, String email, UserRights userRights) {
         this.name = name;

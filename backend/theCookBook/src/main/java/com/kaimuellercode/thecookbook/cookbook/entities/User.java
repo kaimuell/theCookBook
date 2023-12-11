@@ -1,10 +1,13 @@
-package com.kaimuellercode.thecookbook.cookbook.core;
+package com.kaimuellercode.thecookbook.cookbook.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,16 +18,19 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "name"),
                 @UniqueConstraint(columnNames = "email" )
     })
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    private Long id;
 
     @Size(max=20)
     private String name;
 
     // the Hash of the Password
-    private int pwHash;
+    @JsonIgnore
+    private String pwHash;
 
     @Size(max=50)
     @Email
@@ -40,68 +46,20 @@ public class User {
     public User() {
 
     }
+
+    //TODO HASH PASSWORDS WITH ENCODER ON CONSTRUCTION ?
     public User(Long id, String name, String password, String email, UserRights userRights) {
+        this.id = id;
         this.name = name;
-        this.pwHash = password.hashCode();
+        this.pwHash = password;
         this.email = email;
         this.userRights = userRights;
     }
 
     public User(String name, String password, String email, UserRights userRights) {
         this.name = name;
-        this.pwHash = password.hashCode();
+        this.pwHash = password;
         this.email = email;
         this.userRights = userRights;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPwHash() {
-        return pwHash;
-    }
-
-    public void setPwHash(int pwHash) {
-        this.pwHash = pwHash;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public Long getId() {
-        return Id;
-    }
-
-    public UserRights getUserRights() {
-        return userRights;
-    }
-
-    public Set<Recipe> getRecipes() {
-        return recipes;
-    }
-
-    public void setRecipes(Set<Recipe> recipes) {
-        this.recipes = recipes;
-    }
-
-    public void addRecipe(Recipe recipe) {
-        this.recipes.add(recipe);
-    }
-
-    public void setUserRights(UserRights userRights) {
-        this.userRights = userRights;
-    }
-
-    public void setId(Long id) {
-        Id = id;
     }
 }

@@ -1,7 +1,6 @@
 package com.kaimuellercode.thecookbook.cookbook.service;
 
-import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
-import com.kaimuellercode.thecookbook.cookbook.core.User;
+import com.kaimuellercode.thecookbook.cookbook.entities.Recipe;
 import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 import jakarta.transaction.Transactional;
 
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface CookBookService {
+public interface RecipeService {
     /**
      * Get all saved Recipes
      * @return The List of Recipes
@@ -53,10 +52,14 @@ public interface CookBookService {
      * @param ingredientNames The List of Ingredients
      * @return the Recipes which can be Cooked with these Ingredients
      */
-    List<Recipe> getRecipesBookableWithIngredients(Collection<String> ingredientNames);
+    List<Recipe> getRecipesCookableWithIngredients(Collection<String> ingredientNames);
 
+    /**
+     * Saves a Recipe
+     * @param recipe the Recipe
+     * @throws NoSuchUserIdError The id of the Author doesn't exist!
+     */
     @Transactional
     void saveNewRecipe(Recipe recipe) throws NoSuchUserIdError;
 
-    User createUserEntry(User user);
 }

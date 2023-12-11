@@ -1,14 +1,15 @@
 package com.kaimuellercode.thecookbook;
 
 import com.google.gson.Gson;
-import com.kaimuellercode.thecookbook.cookbook.service.CookBookService;
-import com.kaimuellercode.thecookbook.cookbook.core.Ingredient;
-import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
-import com.kaimuellercode.thecookbook.cookbook.core.User;
-import com.kaimuellercode.thecookbook.cookbook.core.UserRights;
+import com.kaimuellercode.thecookbook.cookbook.service.RecipeService;
+import com.kaimuellercode.thecookbook.cookbook.entities.Ingredient;
+import com.kaimuellercode.thecookbook.cookbook.entities.Recipe;
+import com.kaimuellercode.thecookbook.cookbook.entities.User;
+import com.kaimuellercode.thecookbook.cookbook.entities.UserRights;
 import com.kaimuellercode.thecookbook.cookbook.repositories.IngredientRepository;
 import com.kaimuellercode.thecookbook.cookbook.repositories.RecipeRepository;
 import com.kaimuellercode.thecookbook.cookbook.repositories.UserRepository;
+import com.kaimuellercode.thecookbook.cookbook.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,12 +20,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.kaimuellercode.thecookbook.cookbook.core.IngredientUnit.GRAMM;
-import static com.kaimuellercode.thecookbook.cookbook.core.IngredientUnit.KILOGRAMM;
+import static com.kaimuellercode.thecookbook.cookbook.entities.IngredientUnit.GRAMM;
+import static com.kaimuellercode.thecookbook.cookbook.entities.IngredientUnit.KILOGRAMM;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest()
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc()
 public abstract class TestSetup {
 
     @Autowired
@@ -40,12 +41,15 @@ public abstract class TestSetup {
     MockMvc mockMvc;
 
     @Autowired
-    CookBookService cookBookService;
+    RecipeService cookBookService;
+
+    @Autowired
+    UserService userService;
 
     Gson gson = new Gson();
 
     @BeforeEach
-    public void fillDatabase(){
+    public void fillDatabase() {
         Ingredient i1 = new Ingredient();
         i1.setName("zucker");
         i1.setAmount(100.0F);
@@ -61,7 +65,7 @@ public abstract class TestSetup {
         Recipe r = new Recipe();
         userRepository.save(u);
 
-        List<Ingredient> ingredients = List.of(i1,i2);
+        List<Ingredient> ingredients = List.of(i1, i2);
         r.setAuthorId(u.getId());
         r.setName("Teig");
         r.setInstructions("bla");
@@ -78,7 +82,7 @@ public abstract class TestSetup {
         User u2 = new User();
         u2.setEmail("sjidjsaio@fold.com");
         u2.setName("sdakl");
-        u2.setPwHash(23781);
+        u2.setPwHash("23781");
         u2.setUserRights(UserRights.USER);
 
         Ingredient i = new Ingredient();
@@ -112,7 +116,7 @@ public abstract class TestSetup {
         r3.setName("Schokokuchen");
         r3.setAuthorId(u.getId());
         r3.setIngredientList(List.of(i3, i4));
-        r3.setImagePath("somewherq");
+        r3.setImagePath("somewhere");
         r3.setInstructions("Backe With Love!");
 
         r.setAuthorId(u2.getId());
@@ -128,19 +132,22 @@ public abstract class TestSetup {
             rec.getIngredientList().forEach(j -> System.out.println(j.getName()));
         });
         Iterable<Ingredient> inga = ingredientRepository.findAll();
-        inga.forEach(ing -> System.out.println("INGREDIENT: id="+ing.getId() + ", Name="+ing.getName() + ", recipe_id=" + ing.getRecipe_id()));
+        inga.forEach(ing -> System.out.println("INGREDIENT: id=" + ing.getId() + ", Name=" + ing.getName() + ", recipe_id=" + ing.getRecipe_id()));
 
     }
 
     @AfterEach
-    public void cleanUp(){
+    public void cleanUp() {
         recipeRepository.deleteAll();
         userRepository.deleteAll();
         ingredientRepository.deleteAll();
     }
 
     @Test
-    public void testInit(){
+    public void testInit() {
+        assertNotNull(recipeRepository);
+        assertNotNull(userRepository);
+        assertNotNull(ingredientRepository);
         assertFalse(ingredientRepository.findAll().isEmpty());
         assertFalse(recipeRepository.findAll().isEmpty());
         assertFalse(userRepository.findAll().isEmpty());

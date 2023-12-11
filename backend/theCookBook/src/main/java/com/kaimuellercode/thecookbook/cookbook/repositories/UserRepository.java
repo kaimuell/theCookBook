@@ -1,6 +1,6 @@
 package com.kaimuellercode.thecookbook.cookbook.repositories;
 
-import com.kaimuellercode.thecookbook.cookbook.core.User;
+import com.kaimuellercode.thecookbook.cookbook.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByName(String name);
 
     Boolean existsByEmail(String email);
+
+    Optional<User> findByEmail(String email);
 }

@@ -1,7 +1,7 @@
 package com.kaimuellercode.thecookbook;
 
 
-import com.kaimuellercode.thecookbook.cookbook.core.*;
+import com.kaimuellercode.thecookbook.cookbook.entities.*;
 import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 import org.junit.jupiter.api.Test;
 
@@ -26,9 +26,9 @@ public class ServiceTests extends TestSetup {
         assertEquals(2, cookBookService.getRecipesWithExactlyMatchingIngredients(List.of("Mehl")).size());
         assertEquals(1, cookBookService.getRecipesWithExactlyMatchingIngredients(List.of("Mehl", "Schokolade")).size());
 
-        assertNotNull(cookBookService.getRecipesBookableWithIngredients(List.of("Mehl", "Schokolade")));
-        assertEquals(1, cookBookService.getRecipesBookableWithIngredients(List.of("Mehl", "Schokolade")).size());
-        assertEquals(2, cookBookService.getRecipesBookableWithIngredients(List.of("Mehl", "Schokolade", "zucker")).size());
+        assertNotNull(cookBookService.getRecipesCookableWithIngredients(List.of("Mehl", "Schokolade")));
+        assertEquals(1, cookBookService.getRecipesCookableWithIngredients(List.of("Mehl", "Schokolade")).size());
+        assertEquals(2, cookBookService.getRecipesCookableWithIngredients(List.of("Mehl", "Schokolade", "zucker")).size());
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ServiceTests extends TestSetup {
         recipeRepository.findAll().forEach(rec -> System.out.println(rec.getName()));
         assertFalse(cookBookService.getRecipeByAuthor(userRepository.findById(firstID).get().getName()).isEmpty());
         ingredientRepository.findAll().forEach(ing -> System.out.println("Ingredientname : " + ing.getName() + " with RecipeId: " + ing.getRecipe_id()));
-        assertFalse(cookBookService.getRecipesBookableWithIngredients(List.of("ZULUWARRIOR")).isEmpty());
+        assertFalse(cookBookService.getRecipesCookableWithIngredients(List.of("ZULUWARRIOR")).isEmpty());
         Recipe r2 = new Recipe();
         r2.setName("A Recipe");
         r2.setAuthorId(600L);
@@ -59,9 +59,14 @@ public class ServiceTests extends TestSetup {
     @Test
     public void testInsertUser(){
         User u = new User("John Doe", "jk132i3j21990", "John@doe.net", UserRights.USER);
-        User u2 = cookBookService.createUserEntry(u);
+        User u2 = userService.createUserEntry(u);
         assertEquals(u.getName(), u2.getName());
         assertNotNull(u2.getId());
+        assertTrue(userService.findById(u2.getId()).isPresent());
+        assertTrue(userService.existsByName(u.getName()));
+        assertTrue(userService.findByName(u.getName()).isPresent());
+        assertTrue(userService.existsByEmail(u.getEmail()));
+
     }
 
 }

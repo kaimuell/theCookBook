@@ -1,4 +1,4 @@
-package com.kaimuellercode.thecookbook.cookbook.core;
+package com.kaimuellercode.thecookbook.cookbook.entities;
 
 public enum IngredientUnit {
     GRAMM("g"), KILOGRAMM("kg"), LITER("l"), MILLILITER("ml"), SPOON("Löffel"),

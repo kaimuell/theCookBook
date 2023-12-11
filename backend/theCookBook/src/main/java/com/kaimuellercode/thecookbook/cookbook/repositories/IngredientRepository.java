@@ -1,6 +1,6 @@
 package com.kaimuellercode.thecookbook.cookbook.repositories;
 
-import com.kaimuellercode.thecookbook.cookbook.core.Ingredient;
+import com.kaimuellercode.thecookbook.cookbook.entities.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

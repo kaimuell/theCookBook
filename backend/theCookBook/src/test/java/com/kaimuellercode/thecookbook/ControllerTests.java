@@ -1,20 +1,21 @@
 package com.kaimuellercode.thecookbook;
 
 import com.google.gson.reflect.TypeToken;
-import com.kaimuellercode.thecookbook.cookbook.core.Ingredient;
-import com.kaimuellercode.thecookbook.cookbook.core.Recipe;
-import com.kaimuellercode.thecookbook.cookbook.core.User;
-import com.kaimuellercode.thecookbook.cookbook.core.UserRights;
+import com.kaimuellercode.thecookbook.cookbook.entities.Ingredient;
+import com.kaimuellercode.thecookbook.cookbook.entities.Recipe;
+import com.kaimuellercode.thecookbook.cookbook.entities.User;
+import com.kaimuellercode.thecookbook.cookbook.entities.UserRights;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static com.kaimuellercode.thecookbook.cookbook.core.IngredientUnit.GRAMM;
-import static com.kaimuellercode.thecookbook.cookbook.core.IngredientUnit.KILOGRAMM;
+import static com.kaimuellercode.thecookbook.cookbook.entities.IngredientUnit.GRAMM;
+import static com.kaimuellercode.thecookbook.cookbook.entities.IngredientUnit.KILOGRAMM;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,7 +31,8 @@ public class ControllerTests extends TestSetup {
                 .andReturn();
 
         String response = result.getResponse().getContentAsString();
-        Type listType = new TypeToken<List<Recipe>>() {}.getType();
+        Type listType = new TypeToken<List<Recipe>>() {
+        }.getType();
         List<Recipe> recipes = gson.fromJson(response, listType);
         assertNotNull(recipes);
         assertFalse(recipes.isEmpty());
@@ -46,7 +48,8 @@ public class ControllerTests extends TestSetup {
 
         String response = result.getResponse().getContentAsString();
         System.out.println("OUTPUT: " + response);
-        Type listType = new TypeToken<List<Recipe>>() {}.getType();
+        Type listType = new TypeToken<List<Recipe>>() {
+        }.getType();
         List<Recipe> recipes = gson.fromJson(response, listType);
         assertNotNull(recipes);
         assertFalse(recipes.isEmpty());
@@ -63,15 +66,16 @@ public class ControllerTests extends TestSetup {
                 .andReturn();
         String response = result.getResponse().getContentAsString();
         System.out.println("ANSWER : " + response);
-        Type listType = new TypeToken<List<Recipe>>() {}.getType();
+        Type listType = new TypeToken<List<Recipe>>() {
+        }.getType();
         List<Recipe> recipes = gson.fromJson(response, listType);
         assertFalse(recipes.isEmpty());
         Iterable<Recipe> recipies = recipeRepository.findAll();
         recipies.forEach(rec ->
-                System.out.println("RECIPE: id=" + rec.getId() + ", name="+rec.getName() + ", author=" + rec.getAuthorId()));
+                System.out.println("RECIPE: id=" + rec.getId() + ", name=" + rec.getName() + ", author=" + rec.getAuthorId()));
         Iterable<Ingredient> ingredients = ingredientRepository.findAll();
         ingredients.forEach(ing ->
-                System.out.println("INGREDIENT: id="+ing.getId() + ", Name="+ing.getName() + ", recipe_id=" + ing.getRecipe_id()));
+                System.out.println("INGREDIENT: id=" + ing.getId() + ", Name=" + ing.getName() + ", recipe_id=" + ing.getRecipe_id()));
 
         MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
                         .get("/recipe/with_ingredient?ingredientName=Uran")
@@ -100,7 +104,8 @@ public class ControllerTests extends TestSetup {
                 .andReturn();
         String response = result.getResponse().getContentAsString();
         System.out.println("ANSWER : " + response);
-        Type listType = new TypeToken<List<Recipe>>() {}.getType();
+        Type listType = new TypeToken<List<Recipe>>() {
+        }.getType();
         List<Recipe> recipes = gson.fromJson(response, listType);
         assertFalse(recipes.isEmpty());
         assertEquals(1, recipes.size());
@@ -117,18 +122,9 @@ public class ControllerTests extends TestSetup {
 
     @Test
     public void testGetUsernameMapping() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/users/all"))
-                .andExpect(status().isOk())
-                .andReturn();
-        //String allUsers = result.getResponse().getContentAsString();
-        //Type listType = new TypeToken<List<User>>() {}.getType();
-        //List<User> users = gson.fromJson(allUsers, listType);
-        //long id = users.get(0).getId();
-        //String name = users.get(0).getName();
-
-        MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
-                .get("/users/username?id=3")).andExpect(status()
-                .isOk())
+         MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/users/username?id=3")).andExpect(status()
+                        .isOk())
                 .andReturn();
         String nameReturned = result2.getResponse().getContentAsString();
         assertEquals("bob2", nameReturned);
@@ -145,8 +141,6 @@ public class ControllerTests extends TestSetup {
     }
 
 
-
-
     @Test
     public void testPostNewRecipe() throws Exception {
         Long userid = userRepository.findAll().get(0).getId();
@@ -159,7 +153,7 @@ public class ControllerTests extends TestSetup {
         recipe.setName("Brot");
         recipe.setAuthorId(userid);
         recipe.setIngredientList(List.of(new Ingredient(100F, "Gold", GRAMM),
-                                        new Ingredient(1.5F, "Salz", KILOGRAMM)));
+                new Ingredient(1.5F, "Salz", KILOGRAMM)));
         recipe.setInstructions("COOK WITH CARE???");
         String recipeJSON = gson.toJson(recipe);
         System.out.println(recipeJSON);
@@ -171,7 +165,7 @@ public class ControllerTests extends TestSetup {
         assertEquals(before + 1, recipeRepository.count());
         assertEquals(result.getResponse().getContentAsString(), "OK");
 
-        recipe.setAuthorId(userid+105);
+        recipe.setAuthorId(userid + 105);
         recipeJSON = gson.toJson(recipe);
         result = mockMvc.perform(
                 MockMvcRequestBuilders.post("/recipe/newRecipe")

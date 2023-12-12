@@ -3,6 +3,8 @@ package com.kaimuellercode.thecookbook.cookbook.controller;
 import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 import com.kaimuellercode.thecookbook.cookbook.service.RecipeService;
 import com.kaimuellercode.thecookbook.cookbook.entities.Recipe;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,32 +19,35 @@ import java.util.Optional;
 public class RecipeController {
 
     @Autowired
-    private RecipeService cookBookService;
+    private RecipeService recipeService;
 
-    @GetMapping(path = "/byauthor")
+    Logger logger = LoggerFactory.getLogger(RecipeController.class);
+
+    @GetMapping(path = "byauthor")
     public List<Recipe> getRecipeByAuthor(@RequestParam String author) {
-        return cookBookService.getRecipeByAuthor(author);
+        return recipeService.getRecipeByAuthor(author);
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping(path = "all")
     public List<Recipe> getAllRecipes() {
-        return cookBookService.getAllRecipes();
+        logger.info("All recipes requested");
+        return recipeService.getAllRecipes();
     }
 
 
     @GetMapping(path = "with_ingredient")
     public List<Recipe> getRecipesWhichContainIngredient(@RequestParam String ingredientName) {
-        return cookBookService.getRecipeWithIngredient(ingredientName);
+        return recipeService.getRecipeWithIngredient(ingredientName);
     }
 
     @GetMapping(path = "cookable_with_ingredients")
     public List<Recipe> getRecipesCookableWithIngredients(@RequestParam List<String> ingredientNames) {
-        return cookBookService.getRecipesCookableWithIngredients(ingredientNames);
+        return recipeService.getRecipesCookableWithIngredients(ingredientNames);
     }
 
     @GetMapping(path = "withId")
     public Recipe getRecipeWithId(@RequestParam long id) {
-        Optional<Recipe> r = cookBookService.getRecipeByID(id);
+        Optional<Recipe> r = recipeService.getRecipeByID(id);
         if (r.isEmpty()) throw new NoSuchElementException();
         return r.get();
     }
@@ -51,7 +56,7 @@ public class RecipeController {
     public String insertNewRecipe(@RequestBody Recipe recipe) {
         System.out.println("AUTHOR ID : " + recipe.getAuthorId());
         try {
-            cookBookService.saveNewRecipe(recipe);
+            recipeService.saveNewRecipe(recipe);
         } catch (NoSuchUserIdError e1) {
             return "USER NOT EXISTENT";
         }

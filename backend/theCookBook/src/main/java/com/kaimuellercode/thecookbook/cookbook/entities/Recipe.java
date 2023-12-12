@@ -6,6 +6,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Entity to store a Recipe.
+ */
+
 @Entity
 @Table(name="recipes")
 @Getter
@@ -24,7 +28,7 @@ public class Recipe {
     private Long authorId;
 
     @OneToMany
-    @JoinColumn(name = "recipe_id")
+    @JoinColumn(name = "recipeId")
     private List<Ingredient> ingredientList;
 
     //the path to the Image of the Recipe

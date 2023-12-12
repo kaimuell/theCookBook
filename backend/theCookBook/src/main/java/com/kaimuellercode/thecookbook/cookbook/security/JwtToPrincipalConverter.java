@@ -8,8 +8,8 @@ import java.util.List;
 
 @Component
 public class JwtToPrincipalConverter {
-    public UserPrinciple convert(DecodedJWT jwt){
-        return UserPrinciple.builder()
+    public UserPrincipal convert(DecodedJWT jwt){
+        return UserPrincipal.builder()
                 .userId(Long.valueOf(jwt.getSubject()))
                 .email(jwt.getClaim("e").asString())
                 .username(jwt.getClaim("n").asString())

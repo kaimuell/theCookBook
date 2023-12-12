@@ -12,6 +12,10 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Entity representing a User
+ */
+
 @Entity
 @Table(name="users",
         uniqueConstraints = {
@@ -46,8 +50,6 @@ public class User {
     public User() {
 
     }
-
-    //TODO HASH PASSWORDS WITH ENCODER ON CONSTRUCTION ?
     public User(Long id, String name, String password, String email, UserRights userRights) {
         this.id = id;
         this.name = name;

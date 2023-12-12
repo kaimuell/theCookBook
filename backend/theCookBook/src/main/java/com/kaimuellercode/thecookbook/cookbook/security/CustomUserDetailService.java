@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * A Custom UserDetailsService, which Uses the {@link UserService} to fetch a
  * {@link com.kaimuellercode.thecookbook.cookbook.entities.User} and build a
- * {@link UserDetails} through a  {@link UserPrinciple} from it.
+ * {@link UserDetails} through a  {@link UserPrincipal} from it.
  */
 
 @Component
@@ -27,12 +27,12 @@ public class CustomUserDetailService implements UserDetailsService {
      * Uses the Email as username
      * @param username the email
      * @return the user
-     * @throws UsernameNotFoundException
+     * @throws UsernameNotFoundException No User with this email exists
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userService.findByEmail(username).orElseThrow();
-        return UserPrinciple.builder()
+        return UserPrincipal.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
                 .authorities(List.of(new SimpleGrantedAuthority(user.getUserRights().name())))

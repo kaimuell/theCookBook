@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Entity representing an Ingredient in a {@link Recipe}
+ */
+
 @Entity
 @Table(name = "ingredients")
 @Getter
@@ -26,7 +30,7 @@ public class Ingredient {
     private IngredientUnit unit;
 
     //the corresponding id of the recipe (is Foreign Key)
-    private Long recipe_id;
+    private Long recipeId;
 
     public Ingredient(float amount, String name, IngredientUnit ingredientUnit) {
         this.amount = amount;

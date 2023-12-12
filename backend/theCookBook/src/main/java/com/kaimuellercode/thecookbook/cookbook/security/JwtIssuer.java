@@ -18,12 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtIssuer {
     private final JwtProperties jwtProperties;
-    public String issue(long userId, String email, String name, List<String> roles){
+    public String issue(long userId, String email, List<String> roles){
         return JWT.create()
                 .withSubject(String.valueOf(userId))
                 .withExpiresAt(Instant.now().plus((Duration.of(1, ChronoUnit.HOURS))))
                 .withClaim("e", email)
-                .withClaim("n", name)
                 .withClaim("a", roles)
                 .sign(Algorithm.HMAC256(jwtProperties.getSecretKey()));
     }

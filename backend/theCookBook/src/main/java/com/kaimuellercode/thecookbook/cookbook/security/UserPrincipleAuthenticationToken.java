@@ -4,12 +4,14 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 public class UserPrincipleAuthenticationToken extends AbstractAuthenticationToken {
 
-    private final UserPrinciple principle;
-    public UserPrincipleAuthenticationToken(UserPrinciple principle) {
+    private final UserPrincipal principle;
+    public UserPrincipleAuthenticationToken(UserPrincipal principle) {
         super(principle.getAuthorities());
         this.principle = principle;
         setAuthenticated(true);
     }
+
+
 
     @Override
     public Object getCredentials() {
@@ -17,7 +19,7 @@ public class UserPrincipleAuthenticationToken extends AbstractAuthenticationToke
     }
 
     @Override
-    public UserPrinciple getPrincipal() {
+    public UserPrincipal getPrincipal() {
         return principle;
     }
 }

@@ -1,10 +1,8 @@
 package com.kaimuellercode.thecookbook;
 
 import com.google.gson.reflect.TypeToken;
-import com.kaimuellercode.thecookbook.cookbook.entities.Ingredient;
-import com.kaimuellercode.thecookbook.cookbook.entities.Recipe;
-import com.kaimuellercode.thecookbook.cookbook.entities.User;
-import com.kaimuellercode.thecookbook.cookbook.entities.UserRights;
+import com.kaimuellercode.thecookbook.cookbook.entities.*;
+import com.kaimuellercode.thecookbook.cookbook.model.UserInitialInformation;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.http.MediaType;
@@ -75,7 +73,7 @@ public class ControllerTests extends TestSetup {
                 System.out.println("RECIPE: id=" + rec.getId() + ", name=" + rec.getName() + ", author=" + rec.getAuthorId()));
         Iterable<Ingredient> ingredients = ingredientRepository.findAll();
         ingredients.forEach(ing ->
-                System.out.println("INGREDIENT: id=" + ing.getId() + ", Name=" + ing.getName() + ", recipe_id=" + ing.getRecipe_id()));
+                System.out.println("INGREDIENT: id=" + ing.getId() + ", Name=" + ing.getName() + ", recipe_id=" + ing.getRecipeId()));
 
         MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
                         .get("/recipe/with_ingredient?ingredientName=Uran")
@@ -119,7 +117,7 @@ public class ControllerTests extends TestSetup {
         List<Recipe> recipes2 = gson.fromJson(response2, listType);
         assertEquals(2, recipes2.size());
     }
-
+    //TODO
     @Test
     public void testGetUsernameMapping() throws Exception {
          MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
@@ -128,8 +126,9 @@ public class ControllerTests extends TestSetup {
                 .andReturn();
         String nameReturned = result2.getResponse().getContentAsString();
         assertEquals("bob2", nameReturned);
-        User u = new User("John Doe", "jk132i3j21990", "John@doe.net", UserRights.USER);
-        String json = gson.toJson(u);
+        User u = new User("John Doe", "jk132i3j21990", "Johnathan@doe.net", UserRights.ROlE_USER);
+        UserInitialInformation uAp = new UserInitialInformation(u.getName(), u.getEmail(), u.getPwHash());
+        String json = gson.toJson(uAp);
         MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/users/newUser")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))

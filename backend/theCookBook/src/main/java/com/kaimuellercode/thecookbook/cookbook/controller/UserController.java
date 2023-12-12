@@ -1,16 +1,18 @@
 package com.kaimuellercode.thecookbook.cookbook.controller;
 
 import com.kaimuellercode.thecookbook.cookbook.entities.User;
-import com.kaimuellercode.thecookbook.cookbook.entities.UserRights;
+import com.kaimuellercode.thecookbook.cookbook.model.UserInitialInformation;
 import com.kaimuellercode.thecookbook.cookbook.errors.NoSuchUserIdError;
 import com.kaimuellercode.thecookbook.cookbook.errors.UserMailExistsException;
-import com.kaimuellercode.thecookbook.cookbook.errors.UserNameExistsExeption;
+import com.kaimuellercode.thecookbook.cookbook.security.UserPrincipal;
 import com.kaimuellercode.thecookbook.cookbook.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.Optional;
 
 @Controller
@@ -20,14 +22,24 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    //TODO REMOVE THIS AFTER FIRST TESTS
+    /**
+     * Only Accessible by Admins
+     * @param principal the principal
+     * @return all users in Database
+     */
     @GetMapping(path = "/all")
-    public @ResponseBody Iterable<User> getAllUsers() {
+    public @ResponseBody Iterable<User> getAllUsers(@AuthenticationPrincipal UserPrincipal principal) {
         // This returns a JSON or XML with the users
         return service.findAll();
     }
 
+    /**
+     * Get mapping for the name of a user with a given id
+     * @param id th id
+     * @return the Username
+     */
     @GetMapping(path = "username")
     public @ResponseBody String getUserName(@RequestParam long id) {
         Optional<User> user = service.findById(id);
@@ -35,20 +47,26 @@ public class UserController {
         return user.get().getName();
     }
 
+    /**
+     * Post mapping to create a new user
+     * @param userInitialInformation the Information to create a user
+     * @return the user information if successful
+     */
     @PostMapping(path = "newUser", consumes = "application/json")
-    public @ResponseBody User createNewUser(@RequestBody User user) throws UserMailExistsException, UserNameExistsExeption {
-        if (service.existsByName(user.getName())) throw new UserNameExistsExeption();
-        if (service.existsByEmail(user.getEmail())) throw new UserMailExistsException();
+    public @ResponseBody Optional<User> createNewUser(@RequestBody UserInitialInformation userInitialInformation){
+        if(userInitialInformation.name() == null ||userInitialInformation.name().isEmpty()) return Optional.empty();
+        if(userInitialInformation.email() == null ||userInitialInformation.email().isEmpty()) return Optional.empty();
+        if(userInitialInformation.password() == null ||userInitialInformation.password().isEmpty()) return Optional.empty();
 
-        User user1 = service.createUserEntry(user);
-        user1.setUserRights(UserRights.USER);
-        user1.setName(user.getName());
-        user1.setEmail(user.getEmail());
-        user1.setRecipes(new HashSet<>());
-        user1.setPwHash(user.getPwHash()); //TODO HOW TO COMMUNICATE PASSWORDS ???? NEED SALT AND PEPPER !
+        try {
+            return Optional.of(service.createUserEntry(userInitialInformation));
+        } catch (Exception e){
+            if (e instanceof UserMailExistsException) logger.info("Tried to create Account with existing Email "
+                    + userInitialInformation.email());
 
 
-        return user1;
+            return Optional.empty();
+        }
     }
 
 

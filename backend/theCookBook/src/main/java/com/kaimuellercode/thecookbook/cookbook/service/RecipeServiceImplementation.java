@@ -55,7 +55,7 @@ public class RecipeServiceImplementation implements RecipeService {
     @Override
     public List<Recipe> getRecipeWithIngredient(String ingredientName) {
         return entityManager.createQuery(
-                        "SELECT r from Recipe r LEFT JOIN Ingredient i ON i.recipe_id = r.id WHERE i.name LIKE :ingredientName",
+                        "SELECT r from Recipe r LEFT JOIN Ingredient i ON i.recipeId = r.id WHERE i.name LIKE :ingredientName",
                         Recipe.class)
                 .setParameter("ingredientName", ingredientName)
                 .getResultList();
@@ -64,7 +64,7 @@ public class RecipeServiceImplementation implements RecipeService {
     @Override
     public List<Recipe> getRecipesWithExactlyMatchingIngredients(Collection<String> ingredientNames) {
         return entityManager.createQuery(
-                        "SELECT r FROM Recipe r LEFT JOIN Ingredient i ON r.id = i.recipe_id " +
+                        "SELECT r FROM Recipe r LEFT JOIN Ingredient i ON r.id = i.recipeId " +
                                 "WHERE i.name IN (:ingList)" +
                                 "GROUP BY r.id HAVING COUNT(DISTINCT i.name) = :all",
                         Recipe.class)
@@ -77,9 +77,9 @@ public class RecipeServiceImplementation implements RecipeService {
     @Override
     public List<Recipe> getRecipesCookableWithIngredients(Collection<String> ingredientNames) {
         return entityManager.createQuery(
-                        "SELECT r FROM Recipe r Inner JOIN Ingredient i ON r.id = i.recipe_id " +
+                        "SELECT r FROM Recipe r Inner JOIN Ingredient i ON r.id = i.recipeId " +
                                 "WHERE i.name IN (:ingList) AND r.id NOT IN (SELECT r2.id FROM Recipe r2 " +
-                                "JOIN Ingredient i2 ON r2.id = i2.recipe_id WHERE NOT i2.name IN (:ingList))",
+                                "JOIN Ingredient i2 ON r2.id = i2.recipeId WHERE NOT i2.name IN (:ingList))",
 
 
                         Recipe.class)
@@ -99,7 +99,7 @@ public class RecipeServiceImplementation implements RecipeService {
         recipeRepository.save(r);   //Save first to let it generate an Id
         assertNotNull(r.getId());
         for (Ingredient ingredient : r.getIngredientList()) {
-            ingredient.setRecipe_id(r.getId());
+            ingredient.setRecipeId(r.getId());
             ingredientRepository.save(ingredient);
         }
     }

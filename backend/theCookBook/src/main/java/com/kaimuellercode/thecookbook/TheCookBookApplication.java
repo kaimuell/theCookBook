@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class) //TODO ENABLE SECURITY WHEN IT IS SETUP PROPERLY
+
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableJpaRepositories
 @EntityScan
 public class TheCookBookApplication {

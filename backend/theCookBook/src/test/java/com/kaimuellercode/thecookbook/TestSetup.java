@@ -24,7 +24,7 @@ import static com.kaimuellercode.thecookbook.cookbook.entities.IngredientUnit.GR
 import static com.kaimuellercode.thecookbook.cookbook.entities.IngredientUnit.KILOGRAMM;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest()
+@SpringBootTest(classes = TestSecurityConfig.class)
 @AutoConfigureMockMvc()
 public abstract class TestSetup {
 
@@ -60,7 +60,7 @@ public abstract class TestSetup {
         i2.setAmount(200.0F);
         i2.setUnit(GRAMM);
 
-        User u = new User("bob2", "wdsadaswdasdasdas", "bob2@bob.net", UserRights.USER);
+        User u = new User("bob2", "wdsadaswdasdasdas", "bob2@bob.net", UserRights.ROlE_USER);
 
         Recipe r = new Recipe();
         userRepository.save(u);
@@ -73,7 +73,7 @@ public abstract class TestSetup {
         r.setImagePath("./saddasd.jpg");
         recipeRepository.save(r);
 
-        ingredients.forEach(i -> i.setRecipe_id(r.getId()));
+        ingredients.forEach(i -> i.setRecipeId(r.getId()));
 
 
         ingredientRepository.saveAll(ingredients);
@@ -83,7 +83,7 @@ public abstract class TestSetup {
         u2.setEmail("sjidjsaio@fold.com");
         u2.setName("sdakl");
         u2.setPwHash("23781");
-        u2.setUserRights(UserRights.USER);
+        u2.setUserRights(UserRights.ROlE_USER);
 
         Ingredient i = new Ingredient();
         i.setAmount(100F);
@@ -100,7 +100,7 @@ public abstract class TestSetup {
         userRepository.save(u2);
         r.setAuthorId(u2.getId());
         recipeRepository.save(r2);
-        i.setRecipe_id(r2.getId());
+        i.setRecipeId(r2.getId());
         ingredientRepository.save(i);
 
         Ingredient i3 = new Ingredient();
@@ -121,8 +121,8 @@ public abstract class TestSetup {
 
         r.setAuthorId(u2.getId());
         recipeRepository.save(r3);
-        i3.setRecipe_id(r3.getId());
-        i4.setRecipe_id(r3.getId());
+        i3.setRecipeId(r3.getId());
+        i4.setRecipeId(r3.getId());
         ingredientRepository.save(i3);
         ingredientRepository.save(i4);
 
@@ -132,7 +132,7 @@ public abstract class TestSetup {
             rec.getIngredientList().forEach(j -> System.out.println(j.getName()));
         });
         Iterable<Ingredient> inga = ingredientRepository.findAll();
-        inga.forEach(ing -> System.out.println("INGREDIENT: id=" + ing.getId() + ", Name=" + ing.getName() + ", recipe_id=" + ing.getRecipe_id()));
+        inga.forEach(ing -> System.out.println("INGREDIENT: id=" + ing.getId() + ", Name=" + ing.getName() + ", recipe_id=" + ing.getRecipeId()));
 
     }
 

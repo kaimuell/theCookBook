@@ -13,7 +13,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @Builder
-public class UserPrinciple implements UserDetails {
+public class UserPrincipal implements UserDetails {
 
     private final Long userId;
     private final String username;

@@ -1,6 +1,6 @@
 ## The CookBook 
 
-A cookbook application to learn SpringBoot and Angular.
+A cookbook application to learn SpringBoot and Angular, focusing on the backend of the application.
 
 Work in Progress.
 

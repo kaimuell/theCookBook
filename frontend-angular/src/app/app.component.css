@@ -1,6 +1,53 @@
 .headline {
-    font-size: x-large;
+    font-size: large;
     font-family: Arial, Helvetica, sans-serif;
     vertical-align: auto;
+    text-decoration: none;
+    margin-right: 10px;
+    margin-left: 20px;
 
+}
+
+a.headline:link {
+    color: brown;
+    text-decoration: none;
+}
+
+a.headline:visited {
+    color: brown;
+    text-decoration: none;
+}
+
+a.headline:hover {
+    color: brown;
+    text-decoration: none;
+}
+
+a.headline:active {
+    color: brown;
+    text-decoration: none;
+}
+
+a.pagename {
+    font-size: x-large;
+    font-family: Arial, Helvetica, sans-serif;
+    color: cornflowerblue;
+
+    text-decoration: none;
+}
+
+a.pagename:link {
+    text-decoration: none;
+}
+
+a.pagename:visited {
+    text-decoration: none;
+}
+
+a.pagename:hover {
+    text-decoration: none;
+}
+
+a.pagename:active {
+    text-decoration: none;
 }

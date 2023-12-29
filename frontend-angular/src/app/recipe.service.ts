@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Recipe } from './entities/recipe';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +8,11 @@ import { Recipe } from './entities/recipe';
 export class RecipeService {
 
   resServiceURL = 'http://localhost:8080'
-  
-  constructor() { }
+  //http : HttpClient
+
+  constructor() {
+    //this.http = http;
+   }
   
   async getAllRecipes(): Promise<Recipe[]>{
     const requestURL = this.resServiceURL + "/recipe/all";
@@ -27,5 +31,15 @@ export class RecipeService {
     const recipe = await fetch(requestURL);
     return await recipe.json() ?? "User Not Found"
   }
-
+  /*
+  async postLoginData(body : FormGroup) : Promise<boolean> {
+    const postUrl = this.resServiceURL + "/auth//login";
+    var succ = false;
+    this.http.post(postUrl, body).subscribe(
+      (res) => {console.log(res); succ=true;},
+      (err) => {console.log(err); succ=false;}
+      );
+    return succ;
+  }
+  */
 }

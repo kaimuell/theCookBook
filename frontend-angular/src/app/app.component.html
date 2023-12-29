@@ -1,8 +1,11 @@
-<a [routerLink]="['/']">
-    <header>
-    <img src="/assets/logo.png" alt="LOGO"><a class="headline"> THE COOKBOOK </a>
-    </header>
-</a>
+<header>
+    <a [routerLink]="['/']">
+        <img src="/assets/logo.png" alt="LOGO"><a class="pagename"> THE COOKBOOK </a>
+    </a>
+    <a [routerLink]="['/login']"  class="headline">
+        Login
+    </a>
+</header>
 <section>
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 </section>

@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CookbookComponent } from './cookbook/cookbook.component';
+import { HttpClientModule } from '@angular/common/http';
+import { RecipeService } from './recipe.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,8 @@ import { CookbookComponent } from './cookbook/cookbook.component';
     CommonModule, 
     RouterOutlet,
      CookbookComponent, 
-     RouterLink],
+     RouterLink,
+    ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

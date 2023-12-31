@@ -30,8 +30,8 @@ public class WebSecurityConfig{
         logger.info("Security Filter Chain : start initialisation");
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http
-                .cors(cors -> cors.disable())   //Disable CORS
-                .csrf(csrf -> csrf.disable())   //Disable CrossSite Forgery protection
+                .cors(cors -> cors.disable())   //Disable CORS TODO FIX IN PRODUCTION
+                .csrf(csrf -> csrf.disable())   //Disable CrossSite Forgery protection TODO FIX IN PRODUCTION
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

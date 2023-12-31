@@ -22,12 +22,17 @@ export class RecipeDetailComponent {
     const recipeId = parseInt(this.route.snapshot.params['id'], 10);
     this.service.getRecipeWithId(recipeId).then((recipe) => {
       this.recipe = recipe;
-      if (recipe.autorId === undefined) {this.authorName = "UserId not returned"}
+      if (recipe.authorId === undefined) {this.authorName = "UserId not returned"}
       else {
-        this.service.getUserName(recipe.autorId).then((authorName) => {
-          this.authorName = authorName;
+        try {
+          this.service.getUserName(recipe.authorId).then((authorName) => {
+            this.authorName = authorName;
+          }
+          );
+        } catch (error) {
+          this.authorName  = "Error fetching username : "
         }
-        );
+        
       }
     });
   }

@@ -48,13 +48,14 @@ public class RecipeController {
     @GetMapping(path = "withId")
     public Recipe getRecipeWithId(@RequestParam long id) {
         Optional<Recipe> r = recipeService.getRecipeByID(id);
+        //logger.info(String.valueOf(r.get().getAuthorId()));
         if (r.isEmpty()) throw new NoSuchElementException();
         return r.get();
     }
 
     @PostMapping(value = "newRecipe", consumes = "application/json")
     public String insertNewRecipe(@RequestBody Recipe recipe) {
-        System.out.println("AUTHOR ID : " + recipe.getAuthorId());
+        logger.info("New Recipe inserted by Author with ID : " + recipe.getAuthorId());
         try {
             recipeService.saveNewRecipe(recipe);
         } catch (NoSuchUserIdError e1) {

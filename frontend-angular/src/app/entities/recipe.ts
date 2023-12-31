@@ -4,7 +4,7 @@ export interface Recipe {
     id : number,
     name : string,
     instructions : string,
-    autorId : number,
+    authorId : number,
     ingredientList : Ingredient[],
     imagePath : string
 }

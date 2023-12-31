@@ -40,6 +40,7 @@ public class UserController {
      * @param id th id
      * @return the Username
      */
+    @CrossOrigin(origins = "http://localhost:4200") //TODO WRITE INTO CONFIG??
     @GetMapping(path = "username")
     public @ResponseBody String getUserName(@RequestParam long id) {
         Optional<User> user = service.findById(id);

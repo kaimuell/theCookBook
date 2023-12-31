@@ -12,22 +12,29 @@ import { Recipe } from '../entities/recipe';
   styleUrl: './recipe-detail.component.css'
 })
 export class RecipeDetailComponent {
-    route: ActivatedRoute = inject(ActivatedRoute);
-    service = inject(RecipeService);
-    recipe: Recipe | undefined;
-    authorName = "";
+  route: ActivatedRoute = inject(ActivatedRoute);
+  service = inject(RecipeService);
+  recipe: Recipe | undefined;
+  authorName = "";
 
 
-    constructor(){
-      const recipeId = parseInt(this.route.snapshot.params['id'], 10);
-      this.service.getRecipeWithId(recipeId).then((recipe) => {
-        this.recipe = recipe;
-        
-        this.service.getUserName(recipe.autorId).then((authorName) => {
-          this.authorName = authorName;
+  constructor() {
+    const recipeId = parseInt(this.route.snapshot.params['id'], 10);
+    this.service.getRecipeWithId(recipeId).then((recipe) => {
+      this.recipe = recipe;
+      if (recipe.authorId === undefined) {this.authorName = "UserId not returned"}
+      else {
+        try {
+          this.service.getUserName(recipe.authorId).then((authorName) => {
+            this.authorName = authorName;
+          }
+          );
+        } catch (error) {
+          this.authorName  = "Error fetching username : "
         }
-        );
-      });
-    }
+        
+      }
+    });
+  }
 
 }

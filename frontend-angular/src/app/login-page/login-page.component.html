@@ -1,6 +1,6 @@
 <form [formGroup]="loginForm">
     <div>
-        <p class="loginelement" (ngSubmit)="onSubmit()">
+        <p class="loginelement" >
             <label for="email" class="loginelement">Email : </label>
             <input id="email" type="email" formControlName="email">
         </p>
@@ -14,6 +14,6 @@
     <div>
         <p>Complete the form to enable button. : </p>
         <p>Form Status: {{ loginForm.status }}</p>
-        <button type="submit" [disabled]="!loginForm.valid">Submit</button>
+        <button type="submit" (click)="onSubmit()" >Submit</button>
     </div>
 </form>

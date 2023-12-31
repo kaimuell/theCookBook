@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Recipe } from './entities/recipe';
 import { FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Observable, lastValueFrom, take } from 'rxjs';
+import { Observable } from 'rxjs';
+import { LoginRequest } from './entities/loginRequest';
 
 
 
@@ -36,9 +37,11 @@ export class RecipeService {
     const username = await fetch(requestURL);
     return await username.text() ?? "User Not Found"
   }
-  /*
-  async postLoginData(body : FormGroup) : Promise<boolean> {
-    const postUrl = this.resServiceURL + "/auth//login";
+  
+  async postLoginData(form : FormGroup) : Promise<boolean> {
+    const postUrl = this.resServiceURL + "/auth/login";
+    const body : LoginRequest = form.value as LoginRequest;
+    console.log(body);
     var succ = false;
     this.http.post(postUrl, body).subscribe(
       (res) => {console.log(res); succ=true;},
@@ -46,5 +49,4 @@ export class RecipeService {
       );
     return succ;
   }
-  */
 }

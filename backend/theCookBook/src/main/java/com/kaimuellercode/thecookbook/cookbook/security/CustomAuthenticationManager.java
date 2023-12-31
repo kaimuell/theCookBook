@@ -2,13 +2,12 @@ package com.kaimuellercode.thecookbook.cookbook.security;
 
 import com.kaimuellercode.thecookbook.cookbook.configuration.WebSecurityConfig;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +22,12 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String useremail = (String) authentication.getPrincipal();
-        UserPrincipal user = (UserPrincipal) userDetailsService.loadUserByUsername(useremail);
+        UserPrincipal user;
+        try {
+            user = (UserPrincipal) userDetailsService.loadUserByUsername(useremail);
+        } catch (UsernameNotFoundException exception){
+            user = null;
+        }
         String password = (String) authentication.getCredentials();
         if (user == null) {
             throw new AuthenticationException("No Such User " + useremail) {

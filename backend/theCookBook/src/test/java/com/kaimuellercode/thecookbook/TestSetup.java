@@ -50,6 +50,7 @@ public abstract class TestSetup {
 
     @BeforeEach
     public void fillDatabase() {
+        System.out.println("SETUP DATABASE ENTRIES");
         Ingredient i1 = new Ingredient();
         i1.setName("zucker");
         i1.setAmount(100.0F);
@@ -126,6 +127,11 @@ public abstract class TestSetup {
         ingredientRepository.save(i3);
         ingredientRepository.save(i4);
 
+        //printEntities();
+
+    }
+
+    private void printEntities() {
         Iterable<Recipe> recipies = recipeRepository.findAll();
         recipies.forEach(rec -> {
             System.out.println("RECIPE: id=" + rec.getId() + ", name=" + rec.getName() + ", author=" + rec.getAuthorId());
@@ -133,11 +139,11 @@ public abstract class TestSetup {
         });
         Iterable<Ingredient> inga = ingredientRepository.findAll();
         inga.forEach(ing -> System.out.println("INGREDIENT: id=" + ing.getId() + ", Name=" + ing.getName() + ", recipe_id=" + ing.getRecipeId()));
-
     }
 
     @AfterEach
     public void cleanUp() {
+        System.out.println("CLEAN DATABASE ENTRIES");
         recipeRepository.deleteAll();
         userRepository.deleteAll();
         ingredientRepository.deleteAll();
@@ -145,12 +151,14 @@ public abstract class TestSetup {
 
     @Test
     public void testInit() {
+        System.out.println("TestSetup:testInit");
         assertNotNull(recipeRepository);
         assertNotNull(userRepository);
         assertNotNull(ingredientRepository);
         assertFalse(ingredientRepository.findAll().isEmpty());
         assertFalse(recipeRepository.findAll().isEmpty());
         assertFalse(userRepository.findAll().isEmpty());
+        System.out.println("passed");
     }
 
 }

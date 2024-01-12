@@ -17,12 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ServiceTests extends TestSetup {
     @Test
     public void testInit(){
+        System.out.println("ServiceTests:testInit");
         assertFalse(recipeRepository.findAll().isEmpty());
         assertFalse(cookBookService.getAllRecipes().isEmpty());
+        System.out.println("passed");
     }
 
     @Test
     public void testGetAllRecipesWithMatchingIngredients(){
+        System.out.println("ServiceTests:testGetAllRecipesWithMatchingIngredients");
         assertNotNull(cookBookService.getRecipesWithExactlyMatchingIngredients(List.of("Mehl")));
         assertEquals(2, cookBookService.getRecipesWithExactlyMatchingIngredients(List.of("Mehl")).size());
         assertEquals(1, cookBookService.getRecipesWithExactlyMatchingIngredients(List.of("Mehl", "Schokolade")).size());
@@ -30,10 +33,12 @@ public class ServiceTests extends TestSetup {
         assertNotNull(cookBookService.getRecipesCookableWithIngredients(List.of("Mehl", "Schokolade")));
         assertEquals(1, cookBookService.getRecipesCookableWithIngredients(List.of("Mehl", "Schokolade")).size());
         assertEquals(2, cookBookService.getRecipesCookableWithIngredients(List.of("Mehl", "Schokolade", "zucker")).size());
+        System.out.println("passed");
     }
 
     @Test
     public void testInsertRecipe(){
+        System.out.println("ServiceTests:testInsertRecipe");
         Long firstID = userRepository.findAll().get(0).getId();
         Recipe r = new Recipe();
         r.setName("Test");
@@ -46,7 +51,7 @@ public class ServiceTests extends TestSetup {
         r.setIngredientList(List.of(i));
 
         cookBookService.saveNewRecipe(r);
-        recipeRepository.findAll().forEach(rec -> System.out.println(rec.getName()));
+        //recipeRepository.findAll().forEach(rec -> System.out.println(rec.getName()));
         assertFalse(userRepository.findById(firstID).isEmpty());
         assertFalse(cookBookService.getRecipeByAuthor(userRepository.findById(firstID).get().getName()).isEmpty());
         ingredientRepository.findAll().forEach(ing -> System.out.println("Ingredientname : " + ing.getName() + " with RecipeId: " + ing.getRecipeId()));
@@ -57,9 +62,11 @@ public class ServiceTests extends TestSetup {
         r2.setInstructions("asdslakdak");
 
         assertThrows(NoSuchUserIdError.class, () -> cookBookService.saveNewRecipe(r2));
+        System.out.println("passed");
     }
     @Test
     public void testInsertUser() throws UserMailExistsException, UserNameExistsExeption {
+        System.out.println("ServiceTests:testInsertUser");
         User u = new User("John Doe", "jk132i3j21990", "John@doe.net", UserRights.ROlE_USER);
         UserInitialInformation uii = new UserInitialInformation(u.getName(),u.getEmail(), u.getPwHash());
         User u2 = userService.createUserEntry(uii);
@@ -70,6 +77,7 @@ public class ServiceTests extends TestSetup {
         assertTrue(userService.existsByName(u.getName()));
         assertTrue(userService.findByName(u.getName()).isPresent());
         assertTrue(userService.existsByEmail(u.getEmail()));
+        System.out.println("passed");
     }
 
 }

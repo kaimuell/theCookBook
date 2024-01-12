@@ -22,6 +22,7 @@ public class ControllerTests extends TestSetup {
 
     @Test
     public void testGetAllRecipes() throws Exception {
+        System.out.println("ControllerTests:testGetAllRecipes");
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                         .get("/recipe/all")
                 )
@@ -34,10 +35,12 @@ public class ControllerTests extends TestSetup {
         List<Recipe> recipes = gson.fromJson(response, listType);
         assertNotNull(recipes);
         assertFalse(recipes.isEmpty());
+        System.out.println("passed");
     }
 
     @Test
     public void testGetRecipesByAuthor() throws Exception {
+        System.out.println("ControllerTests:testGetRecipesByAuthor");
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                         .get("/recipe/byauthor?author=bob2")
                 )
@@ -51,12 +54,13 @@ public class ControllerTests extends TestSetup {
         List<Recipe> recipes = gson.fromJson(response, listType);
         assertNotNull(recipes);
         assertFalse(recipes.isEmpty());
-        //assertEquals("bob2", recipes.get(0).getAuthor().getName());
+        System.out.println("passed");
     }
 
     @Test
     public void testGetRecipesWithIngredient() throws Exception {
 
+        System.out.println("ControllerTests:testGetRecipesWithIngredient");
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                         .get("/recipe/with_ingredient?ingredientName=Mehl")
                 )
@@ -68,12 +72,7 @@ public class ControllerTests extends TestSetup {
         }.getType();
         List<Recipe> recipes = gson.fromJson(response, listType);
         assertFalse(recipes.isEmpty());
-        Iterable<Recipe> recipies = recipeRepository.findAll();
-        recipies.forEach(rec ->
-                System.out.println("RECIPE: id=" + rec.getId() + ", name=" + rec.getName() + ", author=" + rec.getAuthorId()));
-        Iterable<Ingredient> ingredients = ingredientRepository.findAll();
-        ingredients.forEach(ing ->
-                System.out.println("INGREDIENT: id=" + ing.getId() + ", Name=" + ing.getName() + ", recipe_id=" + ing.getRecipeId()));
+        //printRecipes();
 
         MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
                         .get("/recipe/with_ingredient?ingredientName=Uran")
@@ -91,10 +90,21 @@ public class ControllerTests extends TestSetup {
         assertFalse(recipes2.isEmpty());
         assertEquals(1, recipes2.size());
         assertEquals("Urankuchen", recipes2.get(0).getName());
+        System.out.println("passed");
+    }
+
+    private void printRecipes() {
+        Iterable<Recipe> recipies = recipeRepository.findAll();
+        recipies.forEach(rec ->
+                System.out.println("RECIPE: id=" + rec.getId() + ", name=" + rec.getName() + ", author=" + rec.getAuthorId()));
+        Iterable<Ingredient> ingredients = ingredientRepository.findAll();
+        ingredients.forEach(ing ->
+                System.out.println("INGREDIENT: id=" + ing.getId() + ", Name=" + ing.getName() + ", recipe_id=" + ing.getRecipeId()));
     }
 
     @Test
     public void getCookableRecipes() throws Exception {
+        System.out.println("ControllerTests:getCookableRecipes");
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                         .get("/recipe/cookable_with_ingredients?ingredientNames=Mehl,Schokolade")
                 )
@@ -116,12 +126,14 @@ public class ControllerTests extends TestSetup {
         String response2 = result2.getResponse().getContentAsString();
         List<Recipe> recipes2 = gson.fromJson(response2, listType);
         assertEquals(2, recipes2.size());
+        System.out.println("passed");
     }
-    //TODO
     @Test
     public void testGetUsernameMapping() throws Exception {
+        System.out.println("ControllerTests:testGetUsernameMapping");
+        User bob2 = userRepository.findByName("bob2").get();
          MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/users/username?id=3")).andExpect(status()
+                        .get("/users/username?id=" + bob2.getId())).andExpect(status()
                         .isOk())
                 .andReturn();
         String nameReturned = result2.getResponse().getContentAsString();
@@ -137,11 +149,13 @@ public class ControllerTests extends TestSetup {
         String body = mvc.getResponse().getContentAsString();
         User u2 = gson.fromJson(body, User.class);
         assertEquals(u.getName(), u2.getName());
+        System.out.println("passed");
     }
 
 
     @Test
     public void testPostNewRecipe() throws Exception {
+        System.out.println("ControllerTests:testPostNewRecipe");
         Long userid = userRepository.findAll().get(0).getId();
         long before = recipeRepository.count();
         System.out.println("USERID : " + userid);
@@ -172,6 +186,7 @@ public class ControllerTests extends TestSetup {
                         .content(recipeJSON)
         ).andExpect(status().isOk()).andReturn();
         assertEquals(result.getResponse().getContentAsString(), "USER NOT EXISTENT");
+        System.out.println("passed");
     }
 
 }

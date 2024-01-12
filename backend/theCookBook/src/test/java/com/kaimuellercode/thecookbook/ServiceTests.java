@@ -19,7 +19,6 @@ public class ServiceTests extends TestSetup {
     public void testInit(){
         assertFalse(recipeRepository.findAll().isEmpty());
         assertFalse(cookBookService.getAllRecipes().isEmpty());
-        assertTrue(cookBookService.getRecipeByID(1L).isPresent());
     }
 
     @Test

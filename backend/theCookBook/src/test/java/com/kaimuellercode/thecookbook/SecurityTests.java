@@ -11,7 +11,9 @@ public class SecurityTests extends TestSetup{
     PasswordEncoder passwordEncoder = WebSecurityConfig.passwordEncoder();
     @Test
     public void testPasswordEncryption(){
+        System.out.println("SecurityTests:testPasswordEncryption");
         String pw = passwordEncoder.encode("test");
         assertTrue(passwordEncoder.matches("test", pw));
+        System.out.println("passed");
     }
 }

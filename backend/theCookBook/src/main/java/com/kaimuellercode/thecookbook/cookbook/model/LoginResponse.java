@@ -9,4 +9,5 @@ import java.io.Serializable;
 @Builder
 public class LoginResponse implements Serializable {
     private final String accessToken;
+    private final String username;
 }

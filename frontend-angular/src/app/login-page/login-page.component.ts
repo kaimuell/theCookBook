@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
+import { LoginRequest } from '../entities/loginRequest';
 
 @Component({
   selector: 'app-login-page',
@@ -21,7 +22,11 @@ export class LoginPageComponent {
     onSubmit() {
       console.log("button clicked");
       console.log(this.loginForm.value);
-      this.service.postLoginData(this.loginForm)
+      const loginRequest : LoginRequest = this.loginForm.value as LoginRequest;
+      var requestBody = new FormData();
+      requestBody.append("email", loginRequest.email);
+      requestBody.append("password", loginRequest.password);
+      this.service.postLoginData(requestBody)
       // TODO: Use EventEmitter with form value
     }
 }

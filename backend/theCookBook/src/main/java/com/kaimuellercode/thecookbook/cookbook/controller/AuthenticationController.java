@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -23,11 +21,15 @@ public class AuthenticationController {
 
     Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
-    @PostMapping("/auth/login")
-    public Optional<LoginResponse> login(@RequestBody @Validated LoginRequest request){
+    @PostMapping("/auth/login") @CrossOrigin
+    public Optional<LoginResponse> login(@ModelAttribute @Validated LoginRequest request){
+        logger.info("Login attempt by : " + request.getEmail());
         try {
-            return Optional.of(authService.attemptLogin(request.getEmail(), request.getPassword()));
+            var token = authService.attemptLogin(request.getEmail(), request.getPassword());
+            logger.info("Login succeded");
+            return Optional.of(token);
         } catch (AuthenticationException ae){
+            logger.info("Login not successfull");
             logger.info(ae.getMessage());
             return Optional.empty();
         }

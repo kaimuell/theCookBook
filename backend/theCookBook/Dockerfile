@@ -1,4 +1,4 @@
-#  PACKAGE
+#  PACKAGE THE JAR
 FROM  eclipse-temurin:21
 
 WORKDIR /app

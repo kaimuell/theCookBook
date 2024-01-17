@@ -12,9 +12,9 @@ import { LoginResponse } from './entities/loginResponse';
 
 export class RecipeService {
 
-  resServiceURL = 'http://localhost:8080';
+  private resServiceURL = 'http://localhost:8080';
 
-  token : String|undefined = undefined;
+  private token : String|undefined = undefined;
 
 
   constructor(private http: HttpClient) {
@@ -45,10 +45,9 @@ export class RecipeService {
     var succ = false;
     this.http.post(postUrl, body).subscribe(
       (response) => {
-        console.log("login successfull" + response); succ=true;
+        console.log("login successfull"); succ=true;
         const loginresponse : LoginResponse = response as LoginResponse;
         this.token = loginresponse.token;
-        console.log(response)
       },
       (error) => {console.log("error on post login :"  + error.error); succ=false;}
       );

@@ -39,6 +39,9 @@ public class AuthenticationService {
         var roles = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();
         var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail(), roles);
-        return LoginResponse.builder().accessToken(token).build();
+
+        var publicUsername = principal.getUserPublicName();
+
+        return LoginResponse.builder().accessToken(token).username(publicUsername).build();
     }
 }

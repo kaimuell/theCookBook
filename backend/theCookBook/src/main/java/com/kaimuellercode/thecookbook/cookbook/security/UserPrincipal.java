@@ -39,6 +39,8 @@ public class UserPrincipal implements UserDetails {
         return email;
     }
 
+    public String getUserPublicName(){return username;}
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

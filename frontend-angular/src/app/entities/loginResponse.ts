@@ -1,3 +1,4 @@
 export interface LoginResponse{
-    token: String
+    token: String,
+    username : String
 }

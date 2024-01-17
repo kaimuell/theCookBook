@@ -10,12 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping(path = "/users")
 public class UserController {
 
@@ -30,7 +29,7 @@ public class UserController {
      * @return all users in Database
      */
     @GetMapping(path = "/all")
-    public @ResponseBody Iterable<User> getAllUsers(@AuthenticationPrincipal UserPrincipal principal) {
+    public Iterable<User> getAllUsers(@AuthenticationPrincipal UserPrincipal principal) {
         // This returns a JSON or XML with the users
         return service.findAll();
     }
@@ -42,7 +41,7 @@ public class UserController {
      */
     @CrossOrigin(origins = "http://localhost:4200") //TODO WRITE INTO CONFIG??
     @GetMapping(path = "username")
-    public @ResponseBody String getUserName(@RequestParam long id) {
+    public String getUserName(@RequestParam long id) {
         Optional<User> user = service.findById(id);
         if (user.isEmpty()) throw new NoSuchUserIdError();
         return user.get().getName();
@@ -54,7 +53,7 @@ public class UserController {
      * @return the user information if successful
      */
     @PostMapping(path = "newUser", consumes = "application/json")
-    public @ResponseBody Optional<User> createNewUser(@RequestBody UserInitialInformation userInitialInformation){
+    public Optional<User> createNewUser(@RequestBody UserInitialInformation userInitialInformation){
         if(userInitialInformation.name() == null ||userInitialInformation.name().isEmpty()) return Optional.empty();
         if(userInitialInformation.email() == null ||userInitialInformation.email().isEmpty()) return Optional.empty();
         if(userInitialInformation.password() == null ||userInitialInformation.password().isEmpty()) return Optional.empty();

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Recipe } from './entities/recipe';
-import { FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Observable, lastValueFrom, take } from 'rxjs';
+import { LoginResponse } from './entities/loginResponse';
 
 
 
@@ -13,7 +12,10 @@ import { Observable, lastValueFrom, take } from 'rxjs';
 
 export class RecipeService {
 
-  resServiceURL = 'http://localhost:8080'
+  private resServiceURL = 'http://localhost:8080';
+
+  private token : String|undefined = undefined;
+
 
   constructor(private http: HttpClient) {
    }
@@ -36,15 +38,19 @@ export class RecipeService {
     const username = await fetch(requestURL);
     return await username.text() ?? "User Not Found"
   }
-  /*
-  async postLoginData(body : FormGroup) : Promise<boolean> {
-    const postUrl = this.resServiceURL + "/auth//login";
+  
+  async postLoginData(body : FormData) : Promise<boolean> {
+    const postUrl = this.resServiceURL + "/auth/login";
+    console.log(body);
     var succ = false;
     this.http.post(postUrl, body).subscribe(
-      (res) => {console.log(res); succ=true;},
-      (err) => {console.log(err); succ=false;}
+      (response) => {
+        console.log("login successfull"); succ=true;
+        const loginresponse : LoginResponse = response as LoginResponse;
+        this.token = loginresponse.token;
+      },
+      (error) => {console.log("error on post login :"  + error.error); succ=false;}
       );
     return succ;
   }
-  */
 }

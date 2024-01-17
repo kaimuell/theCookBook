@@ -31,7 +31,9 @@ public class CustomUserDetailService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userService.findByEmail(username).orElseThrow();
+        var optuser = userService.findByEmail(username);
+        if (optuser.isEmpty()) throw new UsernameNotFoundException("No such User  " + username );
+        var user = optuser.get();
         return UserPrincipal.builder()
                 .userId(user.getId())
                 .email(user.getEmail())

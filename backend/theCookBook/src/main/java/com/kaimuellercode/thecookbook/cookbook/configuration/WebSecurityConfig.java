@@ -24,6 +24,7 @@ public class WebSecurityConfig{
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
+
     @Primary
     @Bean
     public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {

@@ -23,10 +23,10 @@ export class LoginPageComponent {
       console.log("button clicked");
       console.log(this.loginForm.value);
       const loginRequest : LoginRequest = this.loginForm.value as LoginRequest;
-      var requestBody = new FormData();
-      requestBody.append("email", loginRequest.email);
-      requestBody.append("password", loginRequest.password);
-      this.service.postLoginData(requestBody)
-      // TODO: Use EventEmitter with form value
+    
+      this.service.postLoginData(loginRequest).then((isSuccessfull) => {
+        // TODO : if is not successfull show error message
+        // TODO : if successfull route to startingpage
+      })
     }
 }
